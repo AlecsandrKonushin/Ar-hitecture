@@ -2,13 +2,13 @@ using UnityEngine;
 
 namespace Core
 {
-    public class MonoController : MonoBehaviour, IController
+    public abstract class MonoController : MonoBehaviour, IController
     {
+        protected bool pause = true;
+
         public virtual void OnInitialize() { }
 
         public virtual void OnStart() { }
-
-        public void Pause(bool pause) { }
 
         private void Awake()
         {
@@ -19,5 +19,12 @@ namespace Core
         {
             name = GetType().Name;
         }
+
+        public void SetPause(bool value)
+        {
+            pause = value;
+        }
+
+        public virtual void Save() { }
     }
 }

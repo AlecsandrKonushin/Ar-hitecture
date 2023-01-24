@@ -77,6 +77,7 @@
     <Compile Include="Assets/NaughtyAttributes/Scripts/Core/DrawerAttributes/MinMaxSliderAttribute.cs" />
     <Compile Include="Assets/NaughtyAttributes/Scripts/Test/SortingLayerTest.cs" />
     <Compile Include="Assets/1_Scripts/Core/Controllers/Controller.cs" />
+    <Compile Include="Assets/1_Scripts/Core/Data/SCRO_MainData.cs" />
     <Compile Include="Assets/1_Scripts/Types/TypeMusic.cs" />
     <Compile Include="Assets/NaughtyAttributes/Scripts/Core/MetaAttributes/ShowIfAttribute.cs" />
     <Compile Include="Assets/NaughtyAttributes/Scripts/Test/MinMaxValueTest.cs" />
@@ -163,7 +164,7 @@
     <Compile Include="Assets/NaughtyAttributes/Scripts/Core/MetaAttributes/HideIfAttribute.cs" />
     <Compile Include="Assets/NaughtyAttributes/Scripts/Test/HideIfTest.cs" />
     <Compile Include="Assets/NaughtyAttributes/Scripts/Test/FoldoutTest.cs" />
-    <Compile Include="Assets/1_Scripts/Core/Data/SCRO_MainData.cs" />
+    <Compile Include="Assets/1_Scripts/Controllers/EventsController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

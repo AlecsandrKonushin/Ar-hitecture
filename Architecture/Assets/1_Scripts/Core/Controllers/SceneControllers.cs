@@ -2,6 +2,7 @@ using UI;
 using UnityEngine;
 using UnityEngine.Events;
 using DG.Tweening;
+using Gameplay;
 
 namespace Core
 {
@@ -18,21 +19,28 @@ namespace Core
             {
                 BoxControllers.OnInit.AddListener(AfterInit);
                 BoxControllers.InitControllers(sceneControllers);
-            });            
+            });
         }
 
         private void AfterInit()
         {
-            Debug.Log($"AfterInit");
-
             BoxControllers.OnInit.RemoveListener(AfterInit);
             UIManager.Instance.OnInitialize();
+            BoxControllers.OnInit.AddListener(AfterStartControllers);
+            BoxControllers.StartControllers();
+        }
+
+        private void AfterStartControllers()
+        {
+            BoxControllers.OnInit.RemoveListener(AfterStartControllers);
 
             OtherActions();
 
             OnInitEvent?.Invoke();
         }
 
-        protected virtual void OtherActions() { }
+        protected virtual void OtherActions()
+        {
+        }
     }
 }

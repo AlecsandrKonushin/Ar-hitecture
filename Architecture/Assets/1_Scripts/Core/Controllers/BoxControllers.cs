@@ -25,6 +25,11 @@ namespace Core
             Coroutines.StartRoutine(InitGameRoutine());
         }
 
+        public static void StartControllers()
+        {
+            Coroutines.StartRoutine(StartGameRoutime());
+        }
+
         private static IEnumerator InitGameRoutine()
         {
             CreateControllers();
@@ -33,8 +38,17 @@ namespace Core
             InitControllers();
             yield return null;
 
-            StartControllers();
+            OnInit?.Invoke();
+        }
+
+        private static IEnumerator StartGameRoutime()
+        {
+            StartControllersIn();
             yield return null;
+
+            OnInit?.Invoke();
+
+            SetPause(false);
         }
 
         private static void CreateControllers()
@@ -58,7 +72,7 @@ namespace Core
             }
         }
 
-        private static void StartControllers()
+        private static void StartControllersIn()
         {
             foreach (var controller in data.Values)
             {
@@ -67,6 +81,14 @@ namespace Core
         }
 
         #endregion
+
+        public static void SetPause(bool value)
+        {
+            foreach (var controller in data)
+            {
+                (controller.Value as IController).SetPause(value);
+            }
+        }
 
         public static T GetController<T>()
         {
@@ -87,6 +109,14 @@ namespace Core
         private static bool CheckContainsController(Type type)
         {
             return data.ContainsKey(type);
+        }
+
+        public static void SaveGame()
+        {
+            foreach (var controller in data)
+            {
+                (controller.Value as IController).Save();
+            }
         }
     }
 }
