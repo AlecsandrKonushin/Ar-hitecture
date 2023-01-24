@@ -9,5 +9,7 @@ namespace Core
         public virtual void OnStart() { }
 
         public virtual void Pause(bool pause) { }
+
+        public virtual void Save() { }
     }
 }

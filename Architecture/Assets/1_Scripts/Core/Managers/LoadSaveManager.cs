@@ -13,6 +13,8 @@ namespace Core
         [HideInInspector]
         public static UnityEvent OnLoad;
 
+        public static bool IsHaveSave;
+
         private static SaveData saveData;
 
         protected override void AfterAwaik()
@@ -23,22 +25,25 @@ namespace Core
         public static void LoadData()
         {
             saveData = null;
+            IsHaveSave = false;
 
             try
             {
-                if (File.Exists(Application.persistentDataPath + MainData.PATH_SAVE))
+                if (File.Exists(Application.persistentDataPath + SCRO_MainData.PATH_SAVE))
                 {
-                    string strLoadJson = File.ReadAllText(Application.persistentDataPath + MainData.PATH_SAVE);
-                    saveData = JsonUtility.FromJson<SaveData>(strLoadJson);                    
+                    string strLoadJson = File.ReadAllText(Application.persistentDataPath + SCRO_MainData.PATH_SAVE);
+                    saveData = JsonUtility.FromJson<SaveData>(strLoadJson);
+
+                    IsHaveSave = true;
                 }
                 else
                 {
-                    LogManager.LogError($"<color=red>Not have save!</color>");
+                    LogManager.LogError($"Not have save!");
                 }
             }
             catch (Exception ex)
             {
-                LogManager.LogError($"<color=red>Error load game</color> - {ex}");
+                LogManager.LogError($"Error load game - {ex}");
             }
 
             OnLoad?.Invoke();
@@ -52,29 +57,29 @@ namespace Core
 
             try
             {
-                File.WriteAllText(Application.persistentDataPath + MainData.PATH_SAVE, jsonString);
+                File.WriteAllText(Application.persistentDataPath + SCRO_MainData.PATH_SAVE, jsonString);
             }
             catch (Exception ex)
             {
-                Debug.Log($"<color=red>Не удалось сохранить игру - {ex}</color>");
+                LogManager.LogError($"Error save game - {ex}");
             }
         }
 
         private void OnApplicationFocus(bool focus)
         {
-            SaveGame();            
+            SaveGame();
         }
 
         public void DeleteAllSave()
         {
-            if (File.Exists(Application.persistentDataPath + MainData.PATH_SAVE))
+            if (File.Exists(Application.persistentDataPath + SCRO_MainData.PATH_SAVE))
             {
-                File.Delete(Application.persistentDataPath + MainData.PATH_SAVE);
+                File.Delete(Application.persistentDataPath + SCRO_MainData.PATH_SAVE);
             }
 
-            if (File.Exists(Application.persistentDataPath + MainData.PATH_LOGS))
+            if (File.Exists(Application.persistentDataPath + SCRO_MainData.PATH_LOGS))
             {
-                File.Delete(Application.persistentDataPath + MainData.PATH_LOGS);
+                File.Delete(Application.persistentDataPath + SCRO_MainData.PATH_LOGS);
             }
 
 
@@ -95,19 +100,19 @@ namespace Core
                 message = "EROOR: " + message;
             }
 
-            if (File.Exists(Application.persistentDataPath + MainData.PATH_LOGS))
+            if (File.Exists(Application.persistentDataPath + SCRO_MainData.PATH_LOGS))
             {
-                strLoadJson = File.ReadAllText(Application.persistentDataPath + MainData.PATH_LOGS);
+                strLoadJson = File.ReadAllText(Application.persistentDataPath + SCRO_MainData.PATH_LOGS);
                 strLoadJson += $"\n{message}";
             }
 
             try
             {
-                File.WriteAllText(Application.persistentDataPath + MainData.PATH_LOGS, strLoadJson);
+                File.WriteAllText(Application.persistentDataPath + SCRO_MainData.PATH_LOGS, strLoadJson);
             }
             catch (Exception ex)
             {
-                Debug.Log($"<color=red>Error save logs - {ex}</color>");
+                LogManager.LogError($"Error save logs - {ex}>");
             }
         }
     }

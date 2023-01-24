@@ -14,5 +14,10 @@ namespace Core
         {
             BoxControllers.AddMonoController(GetType(), this);
         }
+
+        protected void Reset()
+        {
+            name = GetType().Name;
+        }
     }
 }
