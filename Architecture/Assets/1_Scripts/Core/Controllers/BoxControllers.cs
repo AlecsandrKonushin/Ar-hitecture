@@ -10,17 +10,22 @@ namespace Core
     {
         public static UnityEvent OnInit = new UnityEvent();
 
-        private static Dictionary<Type, object> data = new Dictionary<Type, object>();
+        private Dictionary<Type, object> data = new Dictionary<Type, object>();
 
-        private static Controller[] controllers;
+        private Controller[] controllers;
 
-        public static object GetMan { get; internal set; }
+        private static BoxControllers instance;
+
+        private void Awake()
+        {
+            instance = this;
+        }
 
         #region INIT
 
         public static void InitControllers(Controller[] controllers)
         {
-            BoxControllers.controllers = controllers;
+            instance.controllers = controllers;
 
             Coroutines.StartRoutine(InitGameRoutine());
         }
@@ -53,20 +58,20 @@ namespace Core
 
         private static void CreateControllers()
         {
-            foreach (var controller in controllers)
+            foreach (var controller in instance.controllers)
             {
                 if (!CheckContainsController(controller.GetType()))
                 {
                     var add = Instantiate(controller);
 
-                    data.Add(add.GetType(), add);
+                    instance.data.Add(add.GetType(), add);
                 }
             }
         }
 
         private static void InitControllers()
         {
-            foreach (var controller in data.Values)
+            foreach (var controller in instance.data.Values)
             {
                 (controller as IController).OnInitialize();
             }
@@ -74,7 +79,7 @@ namespace Core
 
         private static void StartControllersIn()
         {
-            foreach (var controller in data.Values)
+            foreach (var controller in instance.data.Values)
             {
                 (controller as IController).OnStart();
             }
@@ -84,7 +89,7 @@ namespace Core
 
         public static void SetPause(bool value)
         {
-            foreach (var controller in data)
+            foreach (var controller in instance.data)
             {
                 (controller.Value as IController).SetPause(value);
             }
@@ -93,7 +98,7 @@ namespace Core
         public static T GetController<T>()
         {
             object controller;
-            data.TryGetValue(typeof(T), out controller);
+            instance.data.TryGetValue(typeof(T), out controller);
 
             return (T)controller;
         }
@@ -102,18 +107,18 @@ namespace Core
         {
             if (!CheckContainsController(type))
             {
-                data.Add(type, monoController);
+                instance.data.Add(type, monoController);
             }
         }
 
         private static bool CheckContainsController(Type type)
         {
-            return data.ContainsKey(type);
+            return instance.data.ContainsKey(type);
         }
 
         public static void SaveGame()
         {
-            foreach (var controller in data)
+            foreach (var controller in instance.data)
             {
                 (controller.Value as IController).Save();
             }
