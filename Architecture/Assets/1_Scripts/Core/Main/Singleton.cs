@@ -13,9 +13,9 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         else
         {
             instance = gameObject.GetComponent<T>();
-        }
 
-        AfterAwaik();
+            AfterAwaik();
+        }
     }
 
     protected virtual void AfterAwaik() { }
