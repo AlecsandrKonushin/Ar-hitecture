@@ -39,6 +39,8 @@ namespace Core
                 else
                 {
                     LogManager.LogError($"Not have save!");
+
+                    saveData = new SaveData();
                 }
             }
             catch (Exception ex)
@@ -51,8 +53,6 @@ namespace Core
 
         public static void SaveGame()
         {
-            saveData = new SaveData();
-
             string jsonString = JsonUtility.ToJson(saveData);
 
             try
