@@ -109,6 +109,7 @@
     <Compile Include="Assets/NaughtyAttributes/Scripts/Test/HorizontalLineTest.cs" />
     <Compile Include="Assets/NaughtyAttributes/Scripts/Core/MetaAttributes/DisableIfAttribute.cs" />
     <Compile Include="Assets/NaughtyAttributes/Scripts/Test/InfoBoxTest.cs" />
+    <Compile Include="Assets/1_Scripts/Controllers/EventsController.cs" />
     <Compile Include="Assets/1_Scripts/Core/Managers/AppManager.cs" />
     <Compile Include="Assets/NaughtyAttributes/Scripts/Core/DrawerAttributes/InfoBoxAttribute.cs" />
     <Compile Include="Assets/1_Scripts/Core/Main/Localizator.cs" />
@@ -146,7 +147,6 @@
     <Compile Include="Assets/NaughtyAttributes/Scripts/Test/EnableIfTest.cs" />
     <Compile Include="Assets/NaughtyAttributes/Scripts/Test/LayerTest.cs" />
     <Compile Include="Assets/NaughtyAttributes/Scripts/Core/DrawerAttributes/SceneAttribute.cs" />
-    <Compile Include="Assets/1_Scripts/Core/Managers/LoadSaveManager.cs" />
     <Compile Include="Assets/NaughtyAttributes/Scripts/Core/MetaAttributes/EnableIfAttributeBase.cs" />
     <Compile Include="Assets/NaughtyAttributes/Scripts/Test/ShowIfTest.cs" />
     <Compile Include="Assets/NaughtyAttributes/Scripts/Test/LabelTest.cs" />
@@ -164,7 +164,9 @@
     <Compile Include="Assets/NaughtyAttributes/Scripts/Core/MetaAttributes/HideIfAttribute.cs" />
     <Compile Include="Assets/NaughtyAttributes/Scripts/Test/HideIfTest.cs" />
     <Compile Include="Assets/NaughtyAttributes/Scripts/Test/FoldoutTest.cs" />
-    <Compile Include="Assets/1_Scripts/Controllers/EventsController.cs" />
+    <Compile Include="Assets/1_Scripts/Core/Managers/TestManager.cs" />
+    <Compile Include="Assets/1_Scripts/Core/Managers/AdManager.cs" />
+    <Compile Include="Assets/1_Scripts/Core/Managers/LoadSaveManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

@@ -15,7 +15,20 @@ namespace Core
 
         public static bool IsHaveSave;
 
-        private static SaveData saveData;
+        private SaveData saveData;
+
+        public static float MusicVolume
+        {
+            get => Instance.saveData.MusicVolume;
+            set => Instance.saveData.MusicVolume = value;
+        }
+
+        public static float SoundsVolume
+        {
+            get => Instance.saveData.SoundsVolume;
+            set => Instance.saveData.SoundsVolume = value;
+        }
+
 
         protected override void AfterAwaik()
         {
@@ -24,23 +37,22 @@ namespace Core
 
         public static void LoadData()
         {
-            saveData = null;
+            Instance.saveData = null;
             IsHaveSave = false;
-
+            
             try
             {
                 if (File.Exists(Application.persistentDataPath + SCRO_MainData.PATH_SAVE))
                 {
                     string strLoadJson = File.ReadAllText(Application.persistentDataPath + SCRO_MainData.PATH_SAVE);
-                    saveData = JsonUtility.FromJson<SaveData>(strLoadJson);
+                    Instance.saveData = JsonUtility.FromJson<SaveData>(strLoadJson);
 
                     IsHaveSave = true;
                 }
                 else
                 {
                     LogManager.LogError($"Not have save!");
-
-                    saveData = new SaveData();
+                    Instance.saveData = new SaveData();
                 }
             }
             catch (Exception ex)
@@ -53,7 +65,11 @@ namespace Core
 
         public static void SaveGame()
         {
-            string jsonString = JsonUtility.ToJson(saveData);
+            IsHaveSave = true;
+
+            BoxControllers.SaveGame();
+
+            string jsonString = JsonUtility.ToJson(Instance.saveData);
 
             try
             {
@@ -67,10 +83,10 @@ namespace Core
 
         private void OnApplicationFocus(bool focus)
         {
-            SaveGame();
+            //SaveGame();            
         }
 
-        public void DeleteAllSave()
+        public static void DeleteAllSave(bool closeGame = true)
         {
             if (File.Exists(Application.persistentDataPath + SCRO_MainData.PATH_SAVE))
             {
@@ -82,12 +98,19 @@ namespace Core
                 File.Delete(Application.persistentDataPath + SCRO_MainData.PATH_LOGS);
             }
 
-
+            if (closeGame)
+            {
 #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
+                UnityEditor.EditorApplication.isPlaying = false;
 #else
             Application.Quit();
 #endif
+            }
+            else
+            {
+                IsHaveSave = false;
+                Instance.saveData = new SaveData();
+            }
 
         }
 
