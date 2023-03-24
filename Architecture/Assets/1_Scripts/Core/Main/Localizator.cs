@@ -1,6 +1,9 @@
-﻿using Data;
+﻿using Core;
+using Data;
+using Gameplay;
 using Logs;
 using System.Collections.Generic;
+using UI;
 using UnityEngine;
 
 namespace Localization
@@ -9,25 +12,67 @@ namespace Localization
     {
         [SerializeField] private TypeLanguage language;
 
-        private const string FILE_UI_TEXTS = "UI";
+        private const string FILE_UI_TEXTS = "UI", FILE_TUTOR_TEXTS = "Tutorial", ZOMBIE_NAMES_TEXTS = "ZombieName";
 
         private bool isLoad;
 
-        private Dictionary<string, string[]> uiTexts = new Dictionary<string, string[]>();
+        private static Dictionary<string, string[]> uiTexts = new Dictionary<string, string[]>();
+        private static Dictionary<string, string[]> tutorTexts = new Dictionary<string, string[]>();
+        private static Dictionary<string, string[]> zombieNamesTexts = new Dictionary<string, string[]>();
 
-        protected override void AfterAwaik()
+        public void Init()
         {
+
+#if !UNITY_EDITOR
+        if (Application.systemLanguage == SystemLanguage.Russian)
+        {
+            language = TypeLanguage.RU;
+        }
+        else
+        {
+            language = TypeLanguage.EN;
+        }
+#endif
+
             LoadData();
+
+        }
+
+        public void Init(TypeLanguage language)
+        {
+            this.language = language;
+
+            LoadData();
+        }
+
+        public void ChangeLanguage(TypeLanguage language)
+        {
+            this.language = language;
+
+            LoadSaveManager.Language = language;
+
+            BoxControllers.GetController<EventsController>().ChangeLocalization();
         }
 
         #region GET_TEXT
 
-        public string GetTextUI(string idText)
+        public static string GetTextUI(string idText)
         {
             return GetText(uiTexts, idText);
         }
 
-        private string GetText(Dictionary<string, string[]> dictionary, string idText)
+        public static string GetTutorialText(string idText)
+        {
+            return GetText(tutorTexts, idText);
+        }
+
+        public static string GetNameZombieText(string idText)
+        {
+            return GetText(zombieNamesTexts, idText);
+        }
+
+
+        private static string GetText(Dictionary<string, string[]> dictionary, string idText)
         {
             string[] textsById = null;
             string needText = "";
@@ -40,7 +85,7 @@ namespace Localization
             }
             else
             {
-                needText = textsById[(int)language]; // Берём текст текущего языка
+                needText = textsById[(int)Instance.language]; // Берём текст текущего языка
             }
 
             if (needText == "")
@@ -51,9 +96,9 @@ namespace Localization
             return needText;
         }
 
-        #endregion GET_TEXT
+#endregion GET_TEXT
 
-        #region LOAD_DATA_TEXTS
+#region LOAD_DATA_TEXTS
 
         private void LoadData()
         {
@@ -63,13 +108,15 @@ namespace Localization
             }
 
             LoadData(FILE_UI_TEXTS, uiTexts);
+            LoadData(FILE_TUTOR_TEXTS, tutorTexts);
+            LoadData(ZOMBIE_NAMES_TEXTS, zombieNamesTexts);
 
             isLoad = true;
         }
 
         private void LoadData(string fileName, Dictionary<string, string[]> dataDictionary)
         {
-            TextAsset textAsset = Resources.Load(MainData.PATH_LOCALIZATION_FILES + fileName.ToString()) as TextAsset;
+            TextAsset textAsset = Resources.Load(SCRO_MainData.PATH_LOCALIZATION_FILES + fileName.ToString()) as TextAsset;
 
             if (textAsset == null)
             {
@@ -88,7 +135,7 @@ namespace Localization
             }
         }
 
-        #endregion LOAD_DATA_TEXTS
+#endregion LOAD_DATA_TEXTS
     }
 
     public enum TypeLanguage

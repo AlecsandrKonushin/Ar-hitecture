@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Data;
+using Localization;
 using Logs;
 using SaveSystem;
 using UnityEngine;
@@ -28,7 +29,12 @@ namespace Core
             get => Instance.saveData.SoundsVolume;
             set => Instance.saveData.SoundsVolume = value;
         }
-
+        
+        public static TypeLanguage Language
+        {
+            get => Instance.saveData.Language;
+            set => Instance.saveData.Language = value;
+        }
 
         protected override void AfterAwaik()
         {

@@ -33,8 +33,11 @@ namespace Core
         private void AfterStartControllers()
         {
             BoxControllers.OnInit.RemoveListener(AfterStartControllers);
+            UIManager.Instance.OnStart();
 
             OtherActions();
+            
+            BoxControllers.GetController<EventsController>().ChangeLocalization();
 
             OnInitEvent?.Invoke();
         }
